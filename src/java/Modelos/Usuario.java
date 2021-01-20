@@ -18,14 +18,36 @@ public class Usuario {
     private int id;
     private String nome;
     private String cpf;
-    private Date datanascimento;
+    private Date datanasc;
     private String fone;
     private String email;
     private String senha;
+    private String cep;
+    private String endereco;
+    private String bairro;
+    private String cidade;
+    private String uf;
+    
+    public static boolean  podeLogar(String pEmail, String pSenha){
+      Connection con = Conexao.conectar();
+      String sql = "select * from usuario where email = ? and senha = ?";
+      try {
+           PreparedStatement stm = con.prepareStatement(sql);
+           stm.setString(1, pEmail);
+           stm.setString(2, pSenha);
+           ResultSet rs = stm.executeQuery();
+           return rs.next();            
+           
+       } catch (SQLException ex) {
+           System.out.println("Erro: " + ex.getMessage());
+       }
+      return true;
+   }  
+  
     
     public boolean userExiste(String pUser){
       Connection con = Conexao.conectar();
-      String sql = "select * from usuario where usuario = ?";
+      String sql = "select * from usuario where nome = ?";
       try {
            PreparedStatement stm = con.prepareStatement(sql);
            stm.setString(1, pUser);
@@ -34,23 +56,30 @@ public class Usuario {
            
        } catch (SQLException ex) {
            System.out.println("Erro: " + ex.getMessage());
+           
        }
       return true;
     }  
     
     public boolean salvar(){
-       String sql = "insert into usuario(nome,cpf,datanascimento,fone,email,senha)";
-                  sql += "values(?,?,?,?,?,?)";
+       String sql = "insert into usuario(nome,cpf,datanasc,fone,cep,endereco,";
+              sql += "bairro,cidade,uf,email,senha)";
+                  sql += "values(?,?,?,?,?,?,?,?,?,?,?)";
        Connection con = Conexao.conectar();
        
        try {
            PreparedStatement stm = con.prepareStatement(sql);
            stm.setString(1, this.nome);
            stm.setString(2, this.cpf);
-           stm.setDate(3, this.datanascimento);
+           stm.setDate(3, this.datanasc);
            stm.setString(4, this.fone);
-           stm.setString(5,this.email);
-           stm.setString(6,this.senha);
+           stm.setString(5, this.cep);
+           stm.setString(6, this.endereco);
+           stm.setString(7, this.bairro);
+           stm.setString(8, this.cidade);
+           stm.setString(9, this.uf);
+           stm.setString(10,this.email);
+           stm.setString(11,this.senha);
            stm.execute();           
        } catch (SQLException ex) {
            System.out.println("Erro: " + ex.getMessage());
@@ -64,20 +93,30 @@ public class Usuario {
        String sql = "update usuario set ";
               sql +="nome = ?,";
               sql +="cpf = ?,";
-              sql +="datanascimento = ?,";
-              sql +="fone = ?";
+              sql +="datanasc = ?,";
+              sql +="fone = ?,";
+              sql +="cep = ?,";
+              sql +="endereco = ?,";
+              sql +="bairro = ?,";
+              sql +="cidade = ?,";
+              sql +="uf = ?,";
               sql +="email = ?,";
-              sql +="senha = ?";
+              sql +="senha = ? ";
               sql +=" where id = ?";
        try {
            PreparedStatement stm = con.prepareStatement(sql);
            stm.setString(1, this.nome);
            stm.setString(2, this.cpf);
-           stm.setDate(3, this.datanascimento);
+           stm.setDate(3, this.datanasc);
            stm.setString(4, this.fone);
-           stm.setString(4, this.email);
-           stm.setString(4, this.senha);
-           stm.setInt(5, this.id);
+           stm.setString(5, this.cep);
+           stm.setString(6, this.endereco);
+           stm.setString(7, this.bairro);
+           stm.setString(8, this.cidade);
+           stm.setString(9, this.uf);
+           stm.setString(10, this.email);
+           stm.setString(11, this.senha);
+           stm.setInt(12, this.id);
            
            stm.execute();           
        } catch (SQLException ex) {
@@ -89,8 +128,9 @@ public class Usuario {
     
     public Usuario consultar(int id){
         Connection con = Conexao.conectar();
-        String sql = "select id,nome,cpf,datanascimento,fone,email,senha"
-                 + " from usuario where id = ?";
+        String sql = "select id,nome,cpf,datanasc,fone,cep,endereco,bairro,";
+               sql +="cidade,uf,email,senha";
+               sql +=" from usuario where id = ?";
         Usuario usuario = null;
         try {
             PreparedStatement stm = con.prepareStatement(sql);
@@ -98,10 +138,16 @@ public class Usuario {
             ResultSet rs = stm.executeQuery();
             if(rs.next()){
               usuario = new Usuario();
-              usuario.setId(id);
+              usuario.setId(rs.getInt("id"));
               usuario.setNome(rs.getString("nome"));
               usuario.setCpf(rs.getString("cpf"));
-              usuario.setDatanascimento(rs.getDate("datanascimento"));
+              usuario.setDatanasc(rs.getDate("datanasc"));
+              usuario.setFone(rs.getString("fone"));
+              usuario.setCep(rs.getString("cep"));
+              usuario.setEndereco(rs.getString("endereco"));
+              usuario.setBairro(rs.getString("bairro"));
+              usuario.setCidade(rs.getString("cidade"));
+              usuario.setUf(rs.getString("uf"));
               usuario.setEmail(rs.getString("email"));
               usuario.setSenha(rs.getString("senha"));            
            }
@@ -114,7 +160,9 @@ public class Usuario {
 
     public List<Usuario> consultar(){
         Connection con = Conexao.conectar();
-        String sql = "select id,nome,cpf,datanascimento,fone,email,senha from cliente";
+        String sql = "select id,nome,cpf,datanasc,fone,cep,endereco,bairro,";
+               sql += "cidade,uf,email,senha from usuario";
+               
         Usuario usuario = null;
         List<Usuario> lista = new ArrayList<>();
         try {
@@ -123,10 +171,16 @@ public class Usuario {
             ResultSet rs = stm.executeQuery();
             while(rs.next()){
               usuario = new Usuario();
-              usuario.setId(id);
+              usuario.setId(rs.getInt("id"));
               usuario.setNome(rs.getString("nome"));
               usuario.setCpf(rs.getString("cpf"));
-              usuario.setDatanascimento(rs.getDate("datanascimento"));
+              usuario.setDatanasc(rs.getDate("datanasc"));
+              usuario.setFone(rs.getString("fone"));
+              usuario.setCep(rs.getString("cep"));
+              usuario.setEndereco(rs.getString("endereco"));
+              usuario.setBairro(rs.getString("bairro"));
+              usuario.setCidade(rs.getString("cidade"));
+              usuario.setUf(rs.getString("uf"));
               usuario.setEmail(rs.getString("email"));
               usuario.setSenha(rs.getString("senha"));
               lista.add(usuario);
@@ -201,12 +255,52 @@ public class Usuario {
         this.senha = senha;
     }
 
-    public Date getDatanascimento() {
-        return datanascimento;
+    public Date getDatanasc() {
+        return datanasc;
     }
 
-    public void setDatanascimento(Date datanascimento) {
-        this.datanascimento = datanascimento;
+    public void setDatanasc(Date datanasc) {
+        this.datanasc = datanasc;
+    }
+
+    public String getCep() {
+        return cep;
+    }
+
+    public void setCep(String cep) {
+        this.cep = cep;
+    }
+
+    public String getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
+    }
+
+    public String getBairro() {
+        return bairro;
+    }
+
+    public void setBairro(String bairro) {
+        this.bairro = bairro;
+    }
+
+    public String getCidade() {
+        return cidade;
+    }
+
+    public void setCidade(String cidade) {
+        this.cidade = cidade;
+    }
+
+    public String getUf() {
+        return uf;
+    }
+
+    public void setUf(String uf) {
+        this.uf = uf;
     }
   
     

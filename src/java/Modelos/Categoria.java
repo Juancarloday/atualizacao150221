@@ -20,18 +20,20 @@ import utils.Conexao;
  */
 public class Categoria {
     private int id;
+    private int idUsuario;
     private String descricao;
     private String tipo;
    
     public boolean salvar(){
-    String sql = "insert into categoria(descricao, tipo)";
-                  sql += "values(?,?)";
+    String sql = "insert into categoria(idUsuario, descricao, tipo)";
+                  sql += "values(?,?,?)";
         Connection con = Conexao.conectar();
        
         try {
            PreparedStatement stm = con.prepareStatement(sql);
-           stm.setString(1, this.descricao);
-           stm.setString(2, this.tipo);
+           stm.setInt(1, 1);    // idUsuario está mockeado
+           stm.setString(2, this.descricao);
+           stm.setString(3, this.tipo);
            
            
            stm.execute();           
@@ -46,7 +48,7 @@ public class Categoria {
         Connection con = Conexao.conectar();
         String sql = "update categoria set ";
               sql +="descricao = ?,";
-              sql +="tipo = ?,";
+              sql +="tipo = ?";
               sql +=" where id = ?";
         try {
            PreparedStatement stm = con.prepareStatement(sql);

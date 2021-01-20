@@ -1,12 +1,12 @@
 <%-- 
-    Document   : consultaUsuarioi
+    Document   : consultaUsuario
     Created on : 18/12/2020, 08:32:04
     Author     : entra21
 --%>
 
 <%@page import="java.util.List"%>
 <%@page import="Modelos.Usuario"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -29,16 +29,7 @@
             }
         </style>
         </head>
-    <body>
-        <header>
-            <script src="scripts/cabecalho.js" ></script>
-        </header>
-        <section>
-        <nav>
-        <script src="scripts/menu.js" > </script>
-        </nav>
-        <article>
-    <body>
+      <body>
         <h1>Consulta Usuario</h1>
          <hr />
         <%
@@ -47,37 +38,46 @@
            
         %>
         <table>
-        <head>
-        <th>Cpf</th>
-        <th>Nome</th>
-        <th>Data de Nascimento</th>
-        <th>E-mail</th>
-        <th>Telefone</th>
-        <th>Senha</th>
-        <th>Excluir</th>
-        <th>Editar</th>
-        
-         </head> 
-         
-             
-       
+        <thead>
+            <tr>
+                <th>Cpf</th>
+                <th>Nome</th>
+                <th>Data de Nascimento</th>
+                <th>E-mail</th>
+                <th>Telefone</th>
+                <th>CEP</th>
+                <th>Endereço</th>
+                <th>Bairro</th>
+                <th>Cidade</th>
+                <th>UF</th>
+                <th>Senha</th>
+                <th>Excluir</th>
+                <th>Editar</th>
+            </tr>
+         </thead>         
+        <tbody>
             <% for(Usuario u: usuarios) {%>
-             
+               <tr>
                 <td><% out.write(u.getCpf());%></td>
                 <td><% out.write(u.getNome());%></td>
-                <td><% out.write(String.valueOf(u.getDatanascimento()));%></td>
+                <td><% out.write(String.valueOf(u.getDatanasc()));%></td>
                 <td><% out.write(u.getEmail());%></td>
                 <td><% out.write(u.getFone());%></td>
+                <td><% out.write(u.getCep());%></td>
+                <td><% out.write(u.getEndereco());%></td>
+                <td><% out.write(u.getBairro());%></td>
+                <td><% out.write(u.getCidade());%></td>
+                <td><% out.write(u.getUf());%></td>
                 <td><% out.write(u.getSenha());%></td> 
                  
-            <td><%out.write("<a href=excluirusuario.jsp?id="+u.getCpf()+">Excluir</a>");%></td>   
-            <td><%out.write("<a href=editarusuario.jsp?id="+u.getCpf()+">Editar</a>");%></td>   
-             
+                <td><%out.write("<a href=excluirUsuario.jsp?id="+u.getId()+">Excluir</a>");%></td>   
+                <td><%out.write("<a href=editarUsuario.jsp?id="+u.getId()+">Editar</a>");%></td>   
+               </tr>
             <%}%>
              
-         
+        </tbody>
             </table>
-            <footer>
+        <footer>
             <script src="scripts/rodape.js"></script>
         </footer>   
     </body>

@@ -47,7 +47,7 @@ public class Receita {
         String sql = "update receita set ";
               sql +="descricao = ?,";
               sql +="valor = ?,";
-              sql +="data = ?,";
+              sql +="data = ?";
               sql +=" where id = ?";
         try {
            PreparedStatement stm = con.prepareStatement(sql);

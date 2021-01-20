@@ -29,15 +29,8 @@
             }
         </style>
         </head>
-    <body>
-        <header>
-            <script src="scripts/cabecalho.js" ></script>
-        </header>
-        <section>
-        <nav>
-        <script src="scripts/menu.js" > </script>
-        </nav>
-        <article>
+  
+
     <body>
         <h1>Consulta Categoria</h1>
          <hr />
@@ -64,8 +57,8 @@
                 <td><% out.write(c.getDescricao());%></td>
                 <td><% out.write(c.getTipo());%></td> 
                  
-            <td><%out.write("<a href=excluircategoria.jsp?id="+c.getId()+">Excluir</a>");%></td>   
-            <td><%out.write("<a href=editarcategoria.jsp?id="+c.getId()+">Editar</a>");%></td>   
+            <td><%out.write("<a href=excluirCategoria.jsp?id="+c.getId()+">Excluir</a>");%></td>   
+            <td><%out.write("<a href=editarCategoria.jsp?id="+c.getId()+">Editar</a>");%></td>   
             </tr>
             <%}%>
              

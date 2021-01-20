@@ -15,12 +15,14 @@
     <body>
         <h1>Dados da Categoria</h1>
         <%
-          //recebe os valores da tela HTML  
+          //recebe os valores da tela HTML
+          //String id = request.getParameter("id");
           String descricao = request.getParameter("descricao");
           String tipo = request.getParameter("tipo");
          
           //instancia o 
           Categoria categoria = new Categoria();
+          //categoria.setId(Integer.parseInt(id));
           categoria.setDescricao(descricao);
           //categoria.setTipo(Boolean.getBoolean(tipo));
           categoria.setTipo(tipo);

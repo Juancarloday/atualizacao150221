@@ -4,7 +4,9 @@
     Author     : User
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="java.util.List"%>
+<%@page import="Modelos.Usuario"%>
+<%@page contentType="text/html charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -57,52 +59,64 @@
         </style>
     </head>
     <body>
-        <header>
-             <script src="scripts/cabecalho.js"></script>
-        </header>
-        <section>
-            <nav>
-                 <script src="scripts/menu.js"></script>
-            </nav>
-            <article>
-               
+              
                   
-                <h1 class="h">"Cadastro Usuario"</h1>
-                <hr />
-                <p id="erros"></p>
-                <form action="recebedadosusuario.jsp" method ="POST">
-                    <div>
-                      <label>INFORME O CPF</label>
-                      <input type="text" name="cpf" /> <br />
-                      <label id="erroCPF" class="error"></label>            
-                      <br />
+        <h1 class="h">"Cadastro Usuario"</h1>
+        <hr />
 
-                      <label>INFORME O NOME</label>
-                      <input type="text" name="nome" /> <br />
+        
+        <form action="recebeDadosUsuario.jsp" method ="POST">
 
-                      <br />
-                      <label>INFORME DATA NASCIMENTO</label>
-                      <input type="date" name="datanascimento" /> <br />
+        <div>
+            <label>INFORME O CPF</label>
+            <input type="text" name="cpf" /> <br />
+            <label id="erroCPF" class="error"></label>            
+            <br />
 
-                      <br />
-                      <label>INFORME O FONE</label>
-                      <input type="text" name="fone" /> <br />
+            <label>INFORME O NOME</label>
+            <input type="text" name="nome" /> <br />
 
-                      <br />
-                      <label>INFORME O e-mail</label>
-                      <input type="text" name="email" /> <br />
-                      
-                      <br />                      
-                      <label>INFORME SENHA</label><br />
-                      <input type="password" name="senha" /> <br />
-                                      
-                      <hr />
-                      <input type="button" value="Salvar" onclick="enviaDados()"/> <br />
-                      <input type="reset" value="Cancelar" />
-                    </div>
+            <br />
+            <label>INFORME DATA NASCIMENTO</label>
+            <input type="date" name="datanasc" /> <br />
+
+            <br />
+            <label>INFORME O FONE</label>
+            <input type="text" name="fone" /> <br />
+
+            <br />
+            <label>INFORME O CEP</label>
+            <input type="text" name="cep" /> <br />
+            
+            <br />
+            <label>INFORME O ENDEREÇO</label>
+            <input type="text" name="endereco" /> <br />
+            
+            <br />
+            <label>INFORME O BAIRRO</label>
+            <input type="text" name="bairro" /> <br />
+            
+            <br />
+            <label>INFORME A CIDADE</label>
+            <input type="text" name="cidade" /> <br />           
+            
+            <br />
+            <label>INFORME A UF</label>
+            <input type="text" name="uf" /> <br />   
+            
+            <br />
+            <label>INFORME O e-mail</label>
+            <input type="text" name="email" /> <br />
+
+            <br />                      
+            <label>INFORME SENHA</label><br />
+            <input type="password" name="senha" /> <br />
+
+            <hr />
+            <input type="button" value="Salvar" onclick="enviaDados()"/> <br />
+            <input type="reset" value="Cancelar" />
+        </div
                </form>
-            </article>
-        </section>
         <footer>
             <script src="scripts/rodape.js"></script>
         </footer>
@@ -123,45 +137,84 @@
                     if(nome[0].value === ""){
                         erros.innerHTML += "<br>Informe nome";
                         nome[0].style="border: red solid 5px";
+                        alert("informe o Nome");
                         semErros = false;
                     }
                                 
-                    var datanascimento = document.getElementsByName("datanascimento");
-                    if(datanascimento[0].value === ""){
+                    var datanasc = document.getElementsByName("datanasc");
+                    if(datanasc[0].value === ""){
                         erros.innerHTML += "<br>Informe data de nascimento";
-                        datanascimento[0].style="border: red solid 5px";
+                        datanasc[0].style="border: red solid 5px";
+                        alert("informe a Data de Nascimento");
                         semErros = false;
                     }
                     
-                      var fone = document.getElementsByName("fone");
+                    var fone = document.getElementsByName("fone");
                     if(fone[0].value === ""){
                         erros.innerHTML += "<br>Informe fone";
                         fone[0].style="border: red solid 5px";
+                        alert("informe o Fone");
                         semErros = false;
                     }
-                    if(semErros)
-                      document.forms[0].submit();
-                }
                     
+                    var cep = document.getElementsByName("cep");
+                    if(cep[0].value === ""){
+                        erros.innerHTML += "<br>Informe cep";
+                        cep[0].style="border: red solid 5px";
+                        alert("informe o cep");
+                        semErros = false;
+                    }
                     
+                    var endereco = document.getElementsByName("endereco");
+                    if(endereco[0].value === ""){
+                        erros.innerHTML += "<br>Informe endereco";
+                        endereco[0].style="border: red solid 5px";
+                        alert("informe o endereco");
+                        semErros = false;
+                    }
+                            
+                    var bairro = document.getElementsByName("bairro");
+                    if(bairro[0].value === ""){
+                        erros.innerHTML += "<br>Informe bairro";
+                        bairro[0].style="border: red solid 5px";
+                        alert("informe o bairro");
+                        semErros = false;
+                    }
+                            
+                    var cidade = document.getElementsByName("cidade");
+                    if(cidade[0].value === ""){
+                        erros.innerHTML += "<br>Informe cidade";
+                        cidade[0].style="border: red solid 5px";
+                        alert("informe a cidade");
+                        semErros = false;
+                    }
+                            
+                    var uf = document.getElementsByName("uf");
+                    if(uf[0].value === ""){
+                        erros.innerHTML += "<br>Informe uf";
+                        uf[0].style="border: red solid 5px";
+                        alert("informe a uf");
+                        semErros = false;
+                    }
+                                                                  
                     var email = document.getElementsByName("email");
                     if(email[0].value === ""){
                         erros.innerHTML += "<br>Informe email";
                         email[0].style="border: red solid 5px";
+                        alert("informe o e-mail");
                         semErros = false;
                     }                    
                                        
-                                 
-                 var senha = document.getElementsByName("senha");
+                    var senha = document.getElementsByName("senha");
                     if(senha[0].value === ""){
                         erros.innerHTML += "<br>Informe senha";
                         senha[0].style="border: red solid 5px";
+                        alert("informe a Senha");
                         semErros = false;
                     }
                     if(semErros)
                       document.forms[0].submit();
                 }
              </script>
-    </head>
-    </body>
+      </body>
 </html>

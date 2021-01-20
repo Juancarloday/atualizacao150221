@@ -31,14 +31,7 @@
         </style>
         </head>
     <body>
-        <header>
-            <script src="scripts/cabecalho.js" ></script>
-        </header>
-        <section>
-        <nav>
-        <script src="scripts/menu.js" > </script>
-        </nav>
-        <article>
+  
     <body>
         <h1>Consulta Receita</h1>
          <hr />
@@ -67,8 +60,8 @@
                 <td><% out.write(String.valueOf(r.getValor()));%></td>
                 <td><% out.write(String.valueOf(r.getData()));%></td>
                  
-            <td><%out.write("<a href=excluircategoria.jsp?id="+r.getId()+">Excluir</a>");%></td>   
-            <td><%out.write("<a href=editarcategoria.jsp?id="+r.getId()+">Editar</a>");%></td>   
+            <td><%out.write("<a href=excluirReceita.jsp?id="+r.getId()+">Excluir</a>");%></td>   
+            <td><%out.write("<a href=editarReceita.jsp?id="+r.getId()+">Editar</a>");%></td>   
             </tr>
             <%}%>
              

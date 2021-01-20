@@ -30,15 +30,7 @@
         </style>
         </head>
     <body>
-        <header>
-            <script src="scripts/cabecalho.js" ></script>
-        </header>
-        <section>
-        <nav>
-        <script src="scripts/menu.js" > </script>
-        </nav>
-        <article>
-    <body>
+
         <h1>Consulta Despesa</h1>
          <hr />
         <%
@@ -66,8 +58,8 @@
                 <td><% out.write(String.valueOf(d.getValor()));%></td>
                 <td><% out.write(String.valueOf(d.getData()));%></td>
                  
-            <td><%out.write("<a href=excluircategoria.jsp?id="+d.getId()+">Excluir</a>");%></td>   
-            <td><%out.write("<a href=editarcategoria.jsp?id="+d.getId()+">Editar</a>");%></td>   
+            <td><%out.write("<a href=excluirDespesa.jsp?id="+d.getId()+">Excluir</a>");%></td>   
+            <td><%out.write("<a href=editarDespesa.jsp?id="+d.getId()+">Editar</a>");%></td>   
             </tr>
             <%}%>
              

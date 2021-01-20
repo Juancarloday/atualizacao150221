@@ -68,7 +68,7 @@ public boolean salvar(){
     public Despesa consultar(int id){
         Connection con = Conexao.conectar();
         String sql = "select id, descricao, valor, data"
-                 + " from receita where id = ?";
+                 + " from despesa where id = ?";
         Despesa despesa = null;
         try {
             PreparedStatement stm = con.prepareStatement(sql);
