@@ -12,6 +12,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import utils.Conexao;
 
 /**
@@ -19,109 +21,267 @@ import utils.Conexao;
  * @author User
  */
 public class Receita {
+
     private int id;
     private String descricao;
     private float valor;
     private Date data;
-    
-    public boolean salvar(){
-    String sql = "insert into receita(descricao, valor, data)";
-                  sql += "values(?,?,?)";
+    private Date dataInicial;
+    private Date dataFinal;
+
+    public boolean salvar() {
+        String sql = "insert into receita(descricao, valor, data)";
+        sql += "values(?,?,?)";
         Connection con = Conexao.conectar();
-       
+
         try {
-           PreparedStatement stm = con.prepareStatement(sql);
-           stm.setString(1, this.descricao);
-           stm.setFloat(2, this.valor);
-           stm.setDate(3, this.data);
-           
-           stm.execute();           
+            PreparedStatement stm = con.prepareStatement(sql);
+            stm.setString(1, this.descricao);
+            stm.setFloat(2, this.valor);
+            stm.setDate(3, this.data);
+
+            stm.execute();
         } catch (SQLException ex) {
-           System.out.println("Erro: " + ex.getMessage());
-           return false;
-        }        
+            System.out.println("Erro: " + ex.getMessage());
+            return false;
+        }
         return true;
     }
-    public boolean alterar(){
+
+    public boolean alterar() {
         Connection con = Conexao.conectar();
         String sql = "update receita set ";
-              sql +="descricao = ?,";
-              sql +="valor = ?,";
-              sql +="data = ?";
-              sql +=" where id = ?";
+        sql += "descricao = ?,";
+        sql += "valor = ?,";
+        sql += "data = ?";
+        sql += " where id = ?";
         try {
-           PreparedStatement stm = con.prepareStatement(sql);
-           stm.setString(1, this.descricao);
-           stm.setFloat(2, this.valor);
-           stm.setDate(3, this.data);
-           stm.setInt(4, this.id);
-           
-           stm.execute();           
+            PreparedStatement stm = con.prepareStatement(sql);
+            stm.setString(1, this.descricao);
+            stm.setFloat(2, this.valor);
+            stm.setDate(3, this.data);
+            stm.setInt(4, this.id);
+
+            stm.execute();
         } catch (SQLException ex) {
-           System.out.println("Erro: " + ex.getMessage());
-           return false;
-        }        
+            System.out.println("Erro: " + ex.getMessage());
+            return false;
+        }
         return true;
-    } 
-    public Receita consultar(int id){
+    }
+
+    public Receita consultar(int id) {
         Connection con = Conexao.conectar();
         String sql = "select id, descricao, valor, data"
-                 + " from receita where id = ?";
+                + " from receita where id = ?";
         Receita receita = null;
         try {
             PreparedStatement stm = con.prepareStatement(sql);
             stm.setInt(1, id);
             ResultSet rs = stm.executeQuery();
-            if(rs.next()){
-            receita = new Receita();
-            receita.setId(id);
-            receita.setDescricao(rs.getString("descricao"));
-            receita.setValor(rs.getFloat("valor"));
-            receita.setData(rs.getDate("data"));           
-            }
-           
-        } catch (SQLException ex) {
-           System.out.println("Erro: " + ex.getMessage());
-        }      
-    return receita;  
-    }  
+            if (rs.next()) {
+                receita = new Receita();
+                receita.setId(id);
+                receita.setDescricao(rs.getString("descricao"));
+                receita.setValor(rs.getFloat("valor"));
+                receita.setData(rs.getDate("data"));
 
-    public List<Receita> consultar(){
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("Erro: " + ex.getMessage());
+        }
+        return receita;
+    }
+    
+    
+  public ResultSet consultaReceitaDetalh(int user,String descricao,Float valor,Date dataInicio,Date dataFim){
+      Connection con = Conexao.conectar();
+      String sql = "select usuario.nome,  ";
+               sql += "      receita.descricao,   ";
+                sql += "     sum(receita.valor)    ";
+                sql += "from receita, usuario ";
+                sql += "where receita.idusuario = usuario.id ";
+                sql += "  and receita.idusuario = ?";
+                sql += "and receita.data between >= ? and receita.data <= ? ";
+                sql += "group by usuario.nome, receita.descricao ";
+                sql += "order by nome";
+
+      ResultSet rs = null;
+      try {
+          PreparedStatement stm = con.prepareStatement(sql);
+          stm.setInt(1, user);
+          stm.setString(2, descricao);
+          stm.setFloat(3, valor);
+          stm.setDate(4, dataInicio);
+          stm.setDate(5, dataFim);
+          rs = stm.executeQuery();
+      } catch (SQLException ex) {
+          Logger.getLogger(Receita.class.getName()).log(Level.SEVERE, null, ex);
+      }
+      return rs;
+  }
+/*
+    public List<Receita> consultaDetalhada (String inicio, String fim) {
+        Connection con = Conexao.conectar();
+        List<Receita> lista = new ArrayList<>();
+        String sql = "select usuario.nome,  ";
+               sql += "      receita.descricao,   ";
+                sql += "     sum(receita.valor)    ";
+                sql += "from receita, usuario ";
+                sql += "where receita.idusuario = usuario.id ";
+                sql += "  and receita.idusuario = ?";
+                sql += "and receita.data between >= ? and receita.data <= ? ";
+                sql += "group by usuario.nome, receita.descricao ";
+                sql += "order by nome";
+                
+                
+                
+                
+              /*  "select id, descricao, valor, data"
+                   + " from receita where data >= '"  +inicio+"' and data <= '" + fim + "'";*/
+  /*
+        Receita receita = null;
+        try {
+            PreparedStatement stm = con.prepareStatement(sql);
+           // stm.setString(1, inicio);
+           // stm.setString(2, fim);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                receita = new Receita();
+                receita.setId(rs.getInt("id"));
+                receita.setDescricao(rs.getString("descricao"));
+                receita.setValor(rs.getFloat("valor"));
+                receita.setData(rs.getDate("data"));
+
+                lista.add(receita);
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("Erro: " + ex.getMessage());
+        }
+        return lista;
+    }
+   */  
+    
+    public List<Receita> consultaLancamentosByIntervaloData(int idUser, Date dataInicio,Date dataFim, boolean agrupar) {
+        Connection con = Conexao.conectar();
+        List<Receita> lista = new ArrayList<>();
+        String sql = "select receita.descricao, receita.data, ";
+                            
+               if(agrupar)
+                 sql += " sum(receita.valor) as valor ";
+               else
+                 sql += " receita.valor   ";  
+              
+               sql += " from receita ";
+               sql += " where receita.idusuario = ?";
+               sql += " and receita.data between ? and ? ";
+              if (agrupar)
+                 sql += " group by receita.descricao, receita.data ";
+               sql += " order by receita.descricao";
+
+
+        Receita receita = null;
+        try {
+            PreparedStatement stm = con.prepareStatement(sql);
+            stm.setInt(1, idUser);
+            stm.setDate(2, dataInicio);
+            stm.setDate(3, dataFim);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                receita = new Receita();
+                receita.setDescricao(rs.getString("descricao"));
+                receita.setValor(rs.getFloat("valor"));
+                receita.setData(rs.getDate("data")); 
+                lista.add(receita);
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("Erro: " + ex.getMessage());
+        }
+        return lista;
+    }
+  
+    
+    
+    public List<Receita> consultaLancamentosByIntervaloData(int idUser, Date dataInicio,Date dataFim, boolean agrupar, int categoria) {
+        Connection con = Conexao.conectar();
+        List<Receita> lista = new ArrayList<>();
+        String sql = "select receita.descricao, receita.data, ";
+                            
+               if(agrupar)
+                 sql += " sum(receita.valor) as valor ";
+               else
+                 sql += " receita.valor   ";  
+              
+               sql += " from receita ";
+               sql += " where receita.idusuario = ?";
+               sql += " and receita.data between ? and ? ";
+               sql += " and receita.idcategoria = ?";
+              if (agrupar)
+                 sql += " group by receita.descricao, receita.data ";
+               sql += " order by receita.descricao";
+
+
+        Receita receita = null;
+        try {
+            PreparedStatement stm = con.prepareStatement(sql);
+            stm.setInt(1, idUser);
+            stm.setDate(2, dataInicio);
+            stm.setDate(3, dataFim);
+            stm.setInt(4, categoria);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                receita = new Receita();
+                receita.setDescricao(rs.getString("descricao"));
+                receita.setValor(rs.getFloat("valor"));
+                receita.setData(rs.getDate("data")); 
+                lista.add(receita);
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("Erro: " + ex.getMessage());
+        }
+        return lista;
+    }
+    
+    
+    public List<Receita> consultar() {
         List<Receita> lista = new ArrayList<>();
         Connection con = Conexao.conectar();
         String sql = "select id, descricao, valor, data from receita";
         try {
-           PreparedStatement stm = con.prepareStatement(sql);
-           ResultSet rs = stm.executeQuery();
-           while(rs.next()){
-            Receita receita = new Receita();
-            receita.setId(rs.getInt("id"));
-            receita.setDescricao(rs.getString("descricao"));
-            receita.setValor(rs.getFloat("valor"));
-            receita.setData(rs.getDate("data"));           
-            
-             
-             lista.add(receita);
-           }
-           
-        } catch (SQLException ex) {
-           System.out.println("Erro: " + ex.getMessage());
-        }      
-        return lista; 
-}
+            PreparedStatement stm = con.prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Receita receita = new Receita();
+                receita.setId(rs.getInt("id"));
+                receita.setDescricao(rs.getString("descricao"));
+                receita.setValor(rs.getFloat("valor"));
+                receita.setData(rs.getDate("data"));
 
-public boolean excluir(){
+                lista.add(receita);
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("Erro: " + ex.getMessage());
+        }
+        return lista;
+    }
+
+    public boolean excluir() {
         Connection con = Conexao.conectar();
         String sql = "delete from receita ";
-              sql +=" where id = ?";
+        sql += " where id = ?";
         try {
-           PreparedStatement stm = con.prepareStatement(sql);
-           stm.setInt(1, this.id);
-           stm.execute();           
+            PreparedStatement stm = con.prepareStatement(sql);
+            stm.setInt(1, this.id);
+            stm.execute();
         } catch (SQLException ex) {
-           System.out.println("Erro: " + ex.getMessage());
-           return false;
-        }        
+            System.out.println("Erro: " + ex.getMessage());
+            return false;
+        }
         return true;
     }
 
@@ -156,5 +316,21 @@ public boolean excluir(){
     public void setData(Date data) {
         this.data = data;
     }
-} 
 
+    public Date getDataInicial() {
+        return dataInicial;
+    }
+
+    public void setDataInicial(Date dataInicial) {
+        this.dataInicial = dataInicial;
+    }
+
+    public Date getDataFinal() {
+        return dataFinal;
+    }
+
+    public void setDataFinal(Date dataFinal) {
+        this.dataFinal = dataFinal;
+    }
+
+}

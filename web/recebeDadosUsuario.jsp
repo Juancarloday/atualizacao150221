@@ -35,10 +35,10 @@
        user.setSenha(request.getParameter("senha"));
         if (user.salvar()){
             //direciona para a página de informações
-            response.sendRedirect("informacao.jsp?msg=Cliente salvo com sucesso");
+            response.sendRedirect("informacao.jsp?msg=Usuário salvo com sucesso");
          }
         else{
-            response.sendRedirect("erro.jsp?msg=Problemas ao salvar cliente");
+            response.sendRedirect("erro.jsp?msg=Problemas ao salvar Usuário");
         }
     }
         %>

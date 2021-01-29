@@ -24,6 +24,8 @@ public class Despesa {
    private String descricao;
    private float valor;
    private Date data;
+   private Date dataInicial;
+   private Date dataFinal;
    
 public boolean salvar(){
     String sql = "insert into despesa(descricao, valor, data)";
@@ -87,7 +89,40 @@ public boolean salvar(){
         }      
     return despesa;  
     }  
+    
+    
+    
+      public List<Despesa> consultarData(String inicio, String fim) {
+        Connection con = Conexao.conectar();
+        List<Despesa> lista = new ArrayList<>();
+        String sql = "select id, descricao, valor, data"
+                + " from despesa where data >= '"  +inicio+"' and data <= '" + fim + "'";
+        Despesa despesa = null;
+        try {
+            PreparedStatement stm = con.prepareStatement(sql);
+           // stm.setString(1, inicio);
+           // stm.setString(2, fim);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                despesa = new Despesa();
+                despesa.setId(rs.getInt("id"));
+                despesa.setDescricao(rs.getString("descricao"));
+                despesa.setValor(rs.getFloat("valor"));
+                despesa.setData(rs.getDate("data"));
 
+                lista.add(despesa);
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("Erro: " + ex.getMessage());
+        }
+       return lista;
+    }  
+    
+    
+    
+    
+      
     public List<Despesa> consultar(){
         List<Despesa> lista = new ArrayList<>();
         Connection con = Conexao.conectar();
@@ -157,6 +192,22 @@ public boolean excluir(){
 
     public void setData(Date data) {
         this.data = data;
+    }
+
+    public Date getDataInicial() {
+        return dataInicial;
+    }
+
+    public void setDataInicial(Date dataInicial) {
+        this.dataInicial = dataInicial;
+    }
+
+    public Date getDataFinal() {
+        return dataFinal;
+    }
+
+    public void setDataFinal(Date dataFinal) {
+        this.dataFinal = dataFinal;
     }
 
 }

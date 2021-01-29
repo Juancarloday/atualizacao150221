@@ -6,7 +6,7 @@
 
 <%@page import="java.sql.Date"%>
 <%@page import="Modelos.Receita"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -20,12 +20,16 @@
           String descricao = request.getParameter("descricao");
           String valor = request.getParameter("valor");
           String data = request.getParameter("data");
+          String dataInicial = request.getParameter("dataInicial");
+          String dataFinal = request.getParameter("dataFinal");
           
           //instancia o cliente
           Receita receita = new Receita();
           receita.setDescricao(descricao);
           receita.setValor(Float.parseFloat(valor));
           receita.setData(Date.valueOf(data));
+          receita.setDataInicial(Date.valueOf(dataInicial));
+          receita.setDataFinal(Date.valueOf(dataFinal));
           
           if(receita.salvar()){
               out.write("Receita salva com sucesso");
