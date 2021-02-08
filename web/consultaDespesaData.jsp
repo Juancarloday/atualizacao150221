@@ -32,81 +32,95 @@
     </head>
     <body>
 
+
+        <%
+            int idUser = 0;
+            //verifica sessão
+            String usuario = (String) session.getAttribute("usuario");
+            if (usuario == null) {
+                response.sendRedirect("login.jsp");
+            } else {
+                idUser = (int) session.getAttribute("idUser");
+            }
+        %>
+
+
+
         <h1>Consulta Despesa por Data</h1>
-         <hr />
+        <hr />
         <form action="consultaDespesaData.jsp" method="POST">
-           
+
             <label>Digite a Data Inicial</label>
             <input type="text" name="dataInicial" />
-            
+
             <hr/>
 
             <label>Digite a Data Final  </label>
             <input type="text" name="dataFinal" />
-            
+
             <hr/>       
             <input type="submit" value="Consultar" />
-            
+
             <hr/>
-             
-            
-            
-            
-        <%
-           Despesa despesa = new Despesa();
-           List<Despesa> despesas = new ArrayList<>();
-          
-           String inicio = request.getParameter("dataInicial");
-           String fim = request.getParameter("dataFinal");
-           
-           if (inicio != null && fim != null){
-               despesas = despesa.consultarData(inicio, fim);
-           }  
-        %> 
 
-        <%       
-               
-           if (inicio == null && fim == null) {
-              out.write("<table style='display:none'>");
-           } else{
-               if (inicio.isEmpty() && fim.isEmpty())
-                   out.write("<table style='display:none'>");
-               else
-                  out.write("<table style='display:block'>");
-           }         
-              
-        %>
-        
-        
-       
-        <thead>
-        <th>Id</th>
-        <th>Descricao</th>
-        <th>Valor</th>
-        <th>Data</th>
 
-         </thead> 
-         
-             
+
+
+            <%
+                Despesa despesa = new Despesa();
+                List<Despesa> despesas = new ArrayList<>();
+
+                String inicio = request.getParameter("dataInicial");
+                String fim = request.getParameter("dataFinal");
+
+                if (inicio != null && fim != null) {
+                    despesas = despesa.consultarData(inicio, fim);
+                }
+            %> 
+
+            <%
+                if (inicio == null && fim == null) {
+                    out.write("<table style='display:none'>");
+                } else {
+                    if (inicio.isEmpty() && fim.isEmpty()) {
+                        out.write("<table style='display:none'>");
+                    } else {
+                        out.write("<table style='display:block'>");
+                    }
+                }
+
+            %>
+
+
+
+            <thead>
+            <th>Id</th>
+            <th>Descricao</th>
+            <th>Valor</th>
+            <th>Data</th>
+
+        </thead> 
+
+
         <tbody>
-            <% for(Despesa d: despesas) {%>
+            <% for (Despesa d : despesas) {%>
             <tr>
-                <td><% out.write(""+d.getId());%></td>
+                <td><% out.write("" + d.getId());%></td>
                 <td><% out.write(d.getDescricao());%></td>
                 <td><% out.write(String.valueOf(d.getValor()));%></td>
                 <td><% out.write(String.valueOf(d.getData()));%></td>
                 <td><% out.write(String.valueOf(d.getDataInicial()));%></td>
                 <td><% out.write(String.valueOf(d.getDataFinal()));%></td>
-                
+
             </tr>
             <%}%>
-             
+
         </tbody>
-            </table>
-        </form>
-            <footer>
-            <script src="scripts/rodape.js"></script>
-        </footer>   
-    </body>
-    </head>
+    </table>
+</form>
+<footer>
+    <script src="scripts/rodape.js"></script>
+</footer>   
+</body>
+</head>
 </html>

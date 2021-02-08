@@ -4,8 +4,13 @@
     Author     : entra21
 --%>
 
+<%@page import="utils.ConversorData"%>
+<%@page import="java.text.DecimalFormatSymbols"%>
+<%@page import="java.util.Locale"%>
+<%@page import="java.text.DecimalFormat"%>
+<%@page import="Modelos.Despesa"%>
 <%@page import="Modelos.Receita"%>
-<%@page import="java.util.Date"%>
+<%@page import="java.sql.Date"%>
 <%@page import="java.util.ArrayList"%>
 
 <%@page import="java.util.List"%>
@@ -29,43 +34,88 @@
             tr:nth-child(even) {
                 background-color: #B0E0E6;
             }
+
+            .container-item{
+                width: 50%;
+                border: red solid 1px;
+                margin-left: auto;
+                margin-right: auto;
+                padding-left: 15px;
+            }
+
+            .container-item label{
+                font-size: 18px;
+                display: block
+            }
+
+            span{
+                font-weight: bold;
+                color: red;
+            }
         </style>
     </head>
     <body>
-        <%
-          List<Receita> receitas = new ArrayList<>();
-          String descricao = request.getParameter("descricao");
-          if(descricao != null){
-            Receita receita = new Receita();
-            receitas = receita.consultar();
-          }
-        %>
-        <script src="scripts/menu.js"></script>
-        <link rel="stylesheet" href="style/estilos.css">
-        <h1>Consulta Balancete</h1>
-        <hr />
-            <table>
-                <thead>
-                  <th>Id</th> 
-                  <th>Descricao</th>
-                  <th>Valor</th>
-                  <th>Data</th>
-              
-                </thead>
-                <tbody>
-                    <%for(Receita r: receitas){%>
-                        <tr>
-                            <td><%out.write(""+r.getId());%></td>
-                            <td><%out.write(r.getDescricao());%></td>
-                            <td><%out.write(String.valueOf(r.getValor()));%></td>
-                            <td><%out.write(String.valueOf(r.getData()));%></td>
+          <%
+            int idUser = 0;
+            //verifica sessão
+            String usuario = (String) session.getAttribute("usuario");
+            if (usuario == null) {
+                response.sendRedirect("login.jsp");
+            } else {
+                idUser = (int) session.getAttribute("idUser");
+            }
+        %>   
+
+        <form action="consultaBalancete.jsp" method="POST">
+            <div class="container">
+                <label>Digite a Data Inicial</label>
+                <input type="date" name="dataInicio" />
+
+
+                <label>Digite a Data Final</label>
+                <input type="date" name="dataFim" />
+
+                <input type="button" value="Consultar" onclick="enviaForm()" />
+                <hr/>
+                <div class="container-item">
+                    <%
+                        String inicio = request.getParameter("dataInicio");
+                        String fim = request.getParameter("dataFim");
+                        float valorReceita = 0;
+                        float valorDespesa = 0;
+
+                        if (inicio != null & fim != null) {
+                            Date dataInicio = Date.valueOf(inicio);
+                            Date dataFim = Date.valueOf(fim);
                            
-                    </tr>   
-                    <%}%>
-                </tbody>    
-            </table>
-            
-        </form>
-        
+
+                            Receita receita = new Receita();
+                            valorReceita = receita.getTotalReceita(idUser, dataInicio, dataFim);
+
+                            Despesa despesa = new Despesa();
+                            valorDespesa = despesa.getTotalDespesa(idUser, dataInicio, dataFim);
+                        }
+
+                    %>
+                    <p>Total receitas: <span> <%out.write(ConversorData.formataMoeda(valorReceita));%> </span></p>
+                    <p>Total desepesas: <%out.write(ConversorData.formataMoeda(valorDespesa));%> </p>
+                    <p> Saldo: <%out.write(ConversorData.formataMoeda(valorReceita - valorDespesa));%></p>                
+                </div>    
+
+            </div>
+
+        </form>      
+
+        <script>
+
+            function enviaForm() {
+                var inicio = document.getElementsByName("dataInicio")[0].value;
+                var fim = document.getElementsByName("dataFim")[0].value;
+                if (inicio === "" || fim === "") {
+                    alert("è preciso informar datas");
+                } else
+                    document.forms[0].submit();
+            }
+        </script>
     </body>
 </html>

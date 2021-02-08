@@ -16,15 +16,15 @@
                 position: absolute;
                 margin-left: 130px;                
             }*/
-            
-           /*input[type=text]:focus{
-                background-color: white;                                              
-            }
-            
-            input[type=number]:focus{
-                background-color: white;                                              
-            }*/
-            
+
+            /*input[type=text]:focus{
+                 background-color: white;                                              
+             }
+             
+             input[type=number]:focus{
+                 background-color: white;                                              
+             }*/
+
             input[type=text], [type=number]{
                 display: block;
                 /*position: relative;*/
@@ -32,7 +32,7 @@
                 margin-left: 130px; 
                 /*width: 250px;*/
             }
-                        
+
             input[type=button],[type=reset]{
                 display: block;
                 width: 70px;
@@ -41,14 +41,14 @@
                 margin-right: auto; */
                 margin-top: 10px;
             }
-            
+
             label{
                 display: block;
                 position: absolute;
                 margin-top: 20px;
                 margin-left: 20px;                 
             }
-            
+
             /*div{
                 display: block;
                 margin-left: auto;
@@ -61,6 +61,18 @@
         </style>
     </head>
     <body>
+        <%
+            int idUser = 0;
+            //verifica sessão
+            String usuario = (String) session.getAttribute("usuario");
+            if (usuario == null) {
+                response.sendRedirect("login.jsp");
+            } else {
+                idUser = (int) session.getAttribute("idUser");
+            }
+        %>
+
+
         <header>
             <!--<script src="scripts/cabecalho.js"></script>-->
         </header>
@@ -70,34 +82,34 @@
             </nav>
             <article>
                 <div style="margin-left: 20px;">
-                <h1>Cadastro de Categorias (Padrão/inicial)</h1>
-                
-                <form action="recebeDadosCategoriaDefault.jsp" method="POST">
-                    <label>Descrição</label>
-                    <input style="width: 35%" type="text" name="descricao" /> <br /> 
-                    
-                    <select name="tipo" style="margin-left: 130px;">
-                        <option value="D">Despesa</option>
-                        <option value="R">Receita</option>
-                    </select>
-                        
-                    <input type="button" value="Enviar" onclick="enviaForm()" />
-                    <input type="reset" value="Limpar" />
-                </form>
+                    <h1>Cadastro de Categorias (Padrão/inicial)</h1>
+
+                    <form action="recebeDadosCategoriaDefault.jsp" method="POST">
+                        <label>Descrição</label>
+                        <input style="width: 35%" type="text" name="descricao" /> <br /> 
+
+                        <select name="tipo" style="margin-left: 130px;">
+                            <option value="D">Despesa</option>
+                            <option value="R">Receita</option>
+                        </select>
+
+                        <input type="button" value="Enviar" onclick="enviaForm()" />
+                        <input type="reset" value="Limpar" />
+                    </form>
                 </div>
 
                 <p class="error" id="erros" style= "margin-left: 70px; margin-bottom: 50px;
-                                            color: red; font-size: 14px;"></p>
+                   color: red; font-size: 14px;"></p>
 
                 <script>
-                    function enviaForm(){
+                    function enviaForm() {
                         var descricao = document.getElementsByName("descricao");
-                        if(descricao[0].value === ""){
+                        if (descricao[0].value === "") {
                             descricao[0].focus();
                             erros.innerHTML = "Informe a Categoria";
                             exit();
                         }
-                        
+
                         document.forms[0].submit();
                     }
                 </script>

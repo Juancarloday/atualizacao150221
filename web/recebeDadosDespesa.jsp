@@ -10,6 +10,13 @@
 <%@page import="java.sql.Date"%>
 
 <%@page contentType="text/html charset=UTF-8" pageEncoding="UTF-8"%>
+<html>
+    <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Minha Agenda Financeira</title>
+    </head>
+        <body>
+        <h1>Dados Despesas</h1>
 <%
     //verifica sessão
     String usuario = (String) session.getAttribute("usuario");
@@ -35,7 +42,9 @@
     }
     response.sendRedirect("informacao.jsp?msg=" + msg);
 %>
-
+        <hr />
+    </body>
+</html>
 
 
 
