@@ -6,192 +6,109 @@
 
 <%@page contentType="text/html charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html style="background-color:rgba(0, 0, 242, 0.1)">
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-        <link rel="stylesheet" href="styles/estilos.css"/>
-        <title>cadastroCategoria</title>
-        <style>
-            /*input[type=checkbox]{
-                display: block;
-                position: absolute;
-                margin-left: 130px;                
-            }*/
-            
-           /*input[type=text]:focus{
-                background-color: white;                                              
-            }
-            
-            input[type=number]:focus{
-                background-color: white;                                              
-            }*/
-            
-            input[type=text], [type=number]{
-                display: block;
-                /*position: relative;*/
-                background-color: #3CBC8D;
-                margin-left: 130px; 
-                /*width: 250px;*/
-            }
-                        
-            input[type=button],[type=reset]{
-                display: block;
-                width: 70px;
-                margin-left: 350px;
-                /*margin-left: auto;
-                margin-right: auto; */
-                margin-top: 10px;
-            }
-            
-            label{
-                display: block;
-                position: absolute;
-                margin-top: 20px;
-                margin-left: 20px;                 
-            }
-            
-            /*div{
-                display: block;
-                margin-left: auto;
-                margin-right: auto;
-                width: 600px;
-                border: blue solid 2px;
-                margin-bottom: 10px;
-                padding: 20px;
-            }*/
-        </style>
+        <title>Minha Agenda Financeira</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="style/estilos.css">
+        <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+        <link rel="stylesheet" href="style/estilos.css">
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
     </head>
     <body>
         <header>
-            <!--<script src="scripts/cabecalho.js"></script>-->
+            <div class="logo"><img src="imagens/logo.png"></div>
         </header>
-        <section>
-            <nav>
-                <!--<script src="scripts/menu.js"></script>-->
-            </nav>
-            <article>
-                <div style="margin-left: 20px;">
-                <h1>Cadastro de Categorias</h1>
-                
-                <form action="recebeDadosCategoria.jsp" method="POST">
-                    <label>Descrição</label>
-                    <input style="width: 35%" type="text" name="descricao" /> <br /> 
-                    
-                    <select name="tipo" style="margin-left: 130px;">
-                        <option value="D">DESPESA</option>
-                        <option value="R">RECEITA</option>
-                    </select>
-                        
-                    <input type="button" value="Enviar" onclick="enviaForm()" />
-                    <input type="reset" value="Limpar" />
-                </form>
+
+        <div class="login">
+            <img src="imagens/avatar.jpg" style="width:76px">
+            <h3> Olá,
+                <%
+                    String nomeUser = (String) session.getAttribute("nome");
+                    out.write(nomeUser);
+                %> !!
+            </h3>
+            <div class="topnav a">
+                <a href="#"><i class="fa fa-envelope"></i> </a>
+                <a href="#"><i class="fa fa-user"></i></a>
+                <a href="#"><i class="fa fa-cog"></i></a>
+            </div>
+        </div>
+
+        <div class="painel"> Painel de Controle </div><br>
+
+        <div class="menu">
+            <div class="clearfix">
+                <div class="column">
+                    <ul>
+                        <li><a href="menu.jsp" ><i class="fa fa-users fa-fw"></i> MENU </a></li>
+                        <li><a href="cadastroDespesa.jsp"><i class="fas fa-comments-dollar"></i>  Seu novo Gasto</a> </li>
+                        <li><a href="cadastroReceita.jsp"><i class="fas fa-donate"></i>  Sua nova Renda</a></li>
+                        <li><a href="cadastroCategoria.jsp"><i class="fas fa-clipboard"></i>  Crie nova Categoria</a></li>
+                        <li><a href="consultaBalancete.jsp"><i class="fas fa-balance-scale"></i>  Resumo Financeiro</a></li>
+                        <li><a href="#"><i class="fa fa-bell fa-fw"></i>  Meus Dados</a></li>
+                        <li><a href="#"><i class="fa fa-cog fa-fw"></i>  Configurações</a></li>
+                    </ul>
                 </div>
-
-                <p class="error" id="erros" style= "margin-left: 70px; margin-bottom: 50px;
-                                            color: red; font-size: 14px;"></p>
-
-                <script>
-                    function enviaForm(){
-                        var descricao = document.getElementsByName("descricao");
-                        if(descricao[0].value === ""){
-                            descricao[0].focus();
-                            erros.innerHTML = "Informe a Categoria";
-                            exit();
-                        }
-                        
-                        document.forms[0].submit();
-                    }
-                </script>
-            </article>
-        </section>
-        <footer>
-            <!--<script src="scripts/rodape.js"></script>-->
-        </footer>
-    </body>
-</html>
-
-
-
-
-
-
-
-
-<%-- 
-    Document   : cadastroCategoria
-    Created on : 16/12/2020, 08:44:41
-    Author     : entra21
-
-
-<%@page import="Modelos.Receita"%>
-<%@page import="java.util.List"%>
-<%@page import="Modelos.Despesa"%>
-<%@page contentType="text/html charset=UTF-8" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Minha Agenda Financeira</title>
-    </head>
-    <body>
+            </div>
+        </div>
         <%
-         int idUser = 0;
             //verifica sessão
-            String usuario = (String) session.getAttribute("usuario");           
+            int idUser = 0;
+            String usuario = (String) session.getAttribute("usuario");
             if (usuario == null) {
                 response.sendRedirect("login.jsp");
-            } 
-            else{
-               idUser = (int) session.getAttribute("idUser");
+            } else {
+                idUser = (int) session.getAttribute("idUser");
             }
         %>
-        <h1>Cadastro Categoria</h1>
-        <hr />
-         <div>
+        <div class="cadcat"><h1> Cadastro Categoria </h1>
+
             <form action="recebeDadosCategoria.jsp" method="POST">
-            
-            <label>Informe a descrição</label>
-            <input type="text" name="descricao" /> 
-            
-            <br />
-            <label>Informe o tipo</label> <br />
-           <!-- 
-            <input type="radio" id="despesa" name="tipo" value="despesa" />
-            <label for="despesa">Despesa</label><br>
-            <input type="radio" id ="receita" name="tipo" value="receita" />
-            <label for="receita">Receita</label><br>             
-            -->
-            <select name="tipo">
-                <option value="R">Receita</option>
-                <option value="D">Despesa</option>
-            </select>
-           
-            
-            <hr />
-            <input type="button" value="Salvar" onclick="enviaForm()" />
-            <input type="reset" value="Cancelar" onclick="enviaForm()" />
-           
-            <hr />
-            </div>
-        </form>
+                <label>Informe a descrição</label>
+                <input type ="text" name="descricao" /> 
+                <br>
+                <br>
+                <label>Informe o tipo</label>
+                <select  style="width: 15%" name="tipo">
+                    <option value="R">Receita</option>
+                    <option value="D">Despesa</option>
+                </select>
+                <br>
+                <br>      
+                <input class="salvar" type="button" value="Salvar" onclick="enviaForm()" />
+                <input class="cancelar" type="reset" value="Cancelar" onclick="enviaForm()" />
+
+        </div>
         <script>
-            function enviaForm(){
+            function enviaForm() {
                 var descricao = document.getElementsByName("descricao");
-                if(descricao[0].value === ""){
-                   descricao[0].focus();
-                   alert("informe a descricao");
-                   exit();
+                if (descricao[0].value === "") {
+                    descricao[0].focus();
+                    erros.innerHTML = "Informe a Categoria";
+                    exit();
+                }
+
+                document.forms[0].submit();
             }
-                var valor = document.getElementsByName("tipo");
-                if(valor[0].value === ""){
-                   valor[0].focus();
-                   alert("informe o tipo");
-                   exit();
+            var valor = document.getElementsByName("tipo");
+            if (valor[0].value === "") {
+                valor[0].focus();
+                alert("informe o tipo");
+                exit();
             }
-            
             document.forms[0].submit();
-        }
+            }
+
         </script>
-    </body>
+        <footer>
+            <i class="final"><img src="imagens/icon-c.png" > - 2021 - Desenvolvido nas aulas de Java da Turma Maturitech </i>
+        </footer>
+    </section>
+</body>
 </html>
---%>
+

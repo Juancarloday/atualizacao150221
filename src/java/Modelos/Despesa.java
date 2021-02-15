@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Modelos;
 
 import java.sql.Connection;
@@ -14,21 +10,17 @@ import java.util.ArrayList;
 import java.util.List;
 import utils.Conexao;
 
-
-/**
- *
- * @author User
- */
 public class Despesa {
-   private int id;
-   private int idUsuario;
-   private int idCategoria;
-   private String descricao;
-   private float valor;
-   private Date data;
-   private Date dataInicial;
-   private Date dataFinal;
-   
+
+    private int id;
+    private int idUsuario;
+    private int idCategoria;
+    private String descricao;
+    private float valor;
+    private Date data;
+    private Date dataInicial;
+    private Date dataFinal;
+
     public boolean salvar() {
         String sql = "insert into despesa(idusuario, idcategoria, descricao, valor, data)";
         sql += "values(?,?,?,?,?)";
@@ -47,10 +39,9 @@ public class Despesa {
             return false;
         }
         return true;
-    }   
+    }
 
-    
-      public boolean alterar() {
+    public boolean alterar() {
         Connection con = Conexao.conectar();
         String sql = "update despesa set ";
         sql += "idcategoria = ?,";
@@ -74,8 +65,7 @@ public class Despesa {
         return true;
     }
 
-      
-      public Despesa consultar(int pId, int pIdUser) {
+    public Despesa consultar(int pId, int pIdUser) {
         Connection con = Conexao.conectar();
         String sql = "select id, idusuario, idcategoria, descricao, valor, data "
                 + "from despesa where id = ? and idusuario = ?;";
@@ -99,8 +89,8 @@ public class Despesa {
         }
         return despesa;
     }
-        
-      public Despesa consultar(int id) {
+
+    public Despesa consultar(int id) {
         Connection con = Conexao.conectar();
         String sql = "select id, descricao, valor, data"
                 + " from despesa where id = ?";
@@ -124,7 +114,6 @@ public class Despesa {
         return despesa;
     }
 
-  
     public ResultSet consultarInner(int pIdUser) {
         Connection con = Conexao.conectar();
         String sql = "select d.id, d.idusuario, d.idcategoria, c.descricao categoria, "
@@ -143,14 +132,14 @@ public class Despesa {
         }
         return rs;
     }
-    
-    public float getTotalDespesa(int idUser, Date dataInicio, Date dataFim){
-       List<Despesa> lista =  consultaLancamentosByIntervaloData(idUser,dataInicio, dataFim, true);
-       float valor = 0f;
-       for (Despesa d : lista){
-           valor += d.getValor();
-       }
-       return valor;
+
+    public float getTotalDespesa(int idUser, Date dataInicio, Date dataFim) {
+        List<Despesa> lista = consultaLancamentosByIntervaloData(idUser, dataInicio, dataFim, true);
+        float valor = 0f;
+        for (Despesa d : lista) {
+            valor += d.getValor();
+        }
+        return valor;
     }
 
     public List<Despesa> consultaLancamentosByIntervaloData(int idUser, Date dataInicio, Date dataFim, boolean agrupar) {
@@ -272,9 +261,7 @@ public class Despesa {
         }
         return true;
     }
-   
-    
-   
+
     public int getId() {
         return id;
     }

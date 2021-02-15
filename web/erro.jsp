@@ -23,14 +23,14 @@
         <title>Minha Agenda Financeira</title>
     </head>
     <body>
-    <div>
-        <a href="cadastroUsuario.jsp"><img src="imagens/erro.png" width="100px" height="100px"/></a> 
-        
-        <p>
-            <%
-                out.write(request.getParameter("msg"));
-            %>
-        </p> 
-    </div>  
+        <div>
+            <a href="cadastroUsuario.jsp"><img src="imagens/erro.png" width="100px" height="100px"/></a> 
+
+            <p>
+                <%
+                    out.write(request.getParameter("msg"));
+                %>
+            </p> 
+        </div>  
     </body>
 </html>

@@ -18,29 +18,30 @@
         <h1>Receita Editada</h1>
         <hr />
         <%
-          String id = request.getParameter("id");
-          String descricao = request.getParameter("descricao");
-          String valor = request.getParameter("valor");
-          String data = request.getParameter("data");
-          
-          Receita r = new Receita();
-          r.setId(Integer.parseInt(id));
-          r.setDescricao(descricao);
-          r.setValor(Float.parseFloat(valor));
-          r.setData(Date.valueOf(data));
-          
-          
-          if(r.alterar()){
-              out.write("Despesa alterado com sucesso");
-          }
-          else
-          {
-              out.write("Problemas ao salvar Receita");
-          }
-          
-        %>        
-       <hr />
+                //verifica sessão
+    String usuario = (String) session.getAttribute("usuario");
+    int idUser = (int) session.getAttribute("idUser");
+    if (usuario == null) {
+        response.sendRedirect("login.jsp");
+    }
+        Receita receita = new Receita();
+    receita.setId(Integer.parseInt(request.getParameter("id")));
+    receita.setIdUsuario(idUser);
+    receita.setIdCategoria(Integer.parseInt(request.getParameter("idCategoria")));
+    receita.setDescricao(request.getParameter("descricao"));
+    receita.setValor(Float.parseFloat(request.getParameter("valor")));
+    receita.setData(Date.valueOf(request.getParameter("data")));
+    String msg = "";
+    if (receita.alterar()) {
+        msg = "Receita alterada com sucesso!";
+    } else {
+        msg = "Problemas ao alterar Receita!";
+    }
+    response.sendRedirect("informacao.jsp?msg=" + msg);
+%>        
+    
+        <hr />
         <a href="consultaReceita.jsp">Consulta Receita</a>
-        
+
     </body>
 </html>

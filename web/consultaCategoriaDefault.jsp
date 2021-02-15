@@ -3,120 +3,109 @@
     Created on : 21/01/2021, 08:08:40
     Author     : entra21
 --%>
+<%@page import="Modelos.CategoriaDefault"%>
+<%@page import="java.sql.ResultSet"%>
 <%@page contentType="text/html charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html style="background-color:rgba(0, 0, 242, 0.1)">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-        <link rel="stylesheet" href="styles/estilos.css"/>
-        <title>CategoriaDefault</title>
-        <style>
-            /*input[type=checkbox]{
-                display: block;
-                position: absolute;
-                margin-left: 130px;                
-            }*/
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="style/estilos.css">
+        <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+        <link rel="stylesheet" href="style/estilos.css">
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-            /*input[type=text]:focus{
-                 background-color: white;                                              
-             }
-             
-             input[type=number]:focus{
-                 background-color: white;                                              
-             }*/
-
-            input[type=text], [type=number]{
-                display: block;
-                /*position: relative;*/
-                background-color: #3CBC8D;
-                margin-left: 130px; 
-                /*width: 250px;*/
-            }
-
-            input[type=button],[type=reset]{
-                display: block;
-                width: 70px;
-                margin-left: 350px;
-                /*margin-left: auto;
-                margin-right: auto; */
-                margin-top: 10px;
-            }
-
-            label{
-                display: block;
-                position: absolute;
-                margin-top: 20px;
-                margin-left: 20px;                 
-            }
-
-            /*div{
-                display: block;
-                margin-left: auto;
-                margin-right: auto;
-                width: 600px;
-                border: blue solid 2px;
-                margin-bottom: 10px;
-                padding: 20px;
-            }*/
-        </style>
-    </head>
+    </head>   
     <body>
-        <%
-            int idUser = 0;
-            //verifica sessão
-            String usuario = (String) session.getAttribute("usuario");
-            if (usuario == null) {
-                response.sendRedirect("login.jsp");
-            } else {
-                idUser = (int) session.getAttribute("idUser");
-            }
-        %>
-
-
         <header>
-            <!--<script src="scripts/cabecalho.js"></script>-->
+            <div class="logo"><img src="imagens/logo.png"></div>
         </header>
-        <section>
-            <nav>
-                <!--<script src="scripts/menu.js"></script>-->
-            </nav>
-            <article>
-                <div style="margin-left: 20px;">
-                    <h1>Cadastro de Categorias (Padrão/inicial)</h1>
 
-                    <form action="recebeDadosCategoriaDefault.jsp" method="POST">
-                        <label>Descrição</label>
-                        <input style="width: 35%" type="text" name="descricao" /> <br /> 
+        <div class="login">
+            <img src="imagens/avatar.jpg" style="width:76px">
+            <h3> Olá,
+                <%
+                    String nomeUser = (String) session.getAttribute("nome");
+                    out.write(nomeUser);
+                %> !!
+                <h3>
+                    <div class="topnav a">
+                        <a href="#"><i class="fa fa-envelope"></i> </a>
+                        <a href="#"><i class="fa fa-user"></i></a>
+                        <a href="#"><i class="fa fa-cog"></i></a>
+                    </div>
+                    </div>
 
-                        <select name="tipo" style="margin-left: 130px;">
-                            <option value="D">Despesa</option>
-                            <option value="R">Receita</option>
-                        </select>
+                    <div class="painel"> Painel de Controle </div><br>
 
-                        <input type="button" value="Enviar" onclick="enviaForm()" />
-                        <input type="reset" value="Limpar" />
-                    </form>
-                </div>
-
-                <p class="error" id="erros" style= "margin-left: 70px; margin-bottom: 50px;
-                   color: red; font-size: 14px;"></p>
-
-                <script>
-                    function enviaForm() {
-                        var descricao = document.getElementsByName("descricao");
-                        if (descricao[0].value === "") {
-                            descricao[0].focus();
-                            erros.innerHTML = "Informe a Categoria";
-                            exit();
+                    <div class="menu">
+                        <div class="clearfix">
+                            <div class="column">
+                                <ul>
+                                    <li><a href="menu.jsp" ><i class="fa fa-users fa-fw"></i> MENU </a></li>
+                                    <li><a href="cadastroDespesa.jsp"><i class="fas fa-comments-dollar"></i>  Seu novo Gasto</a> </li>
+                                    <li><a href="cadastroReceita.jsp"><i class="fas fa-donate"></i>  Sua nova Renda</a></li>
+                                    <li><a href="cadastroCategoria.jsp"><i class="fas fa-clipboard"></i>  Crie nova Categoria</a></li>
+                                    <li><a href="consultaBalancete.jsp"><i class="fas fa-balance-scale"></i>  Resumo Financeiro</a></li>
+                                    <li><a href="#"><i class="fa fa-bell fa-fw"></i>  Meus Dados</a></li>
+                                    <li><a href="#"><i class="fa fa-cog fa-fw"></i>  Configurações</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>    
+                    <%
+                        //verifica sessão
+                        String usuarioEsperado = "entra21";     // usuario autorizado para manutenção
+                        String usuario = (String) session.getAttribute("usuario");
+                        if (usuario == null) {
+                            response.sendRedirect("login.jsp");
+                        } else if (!usuario.contains(usuarioEsperado)) {
+                            response.sendRedirect("index.html");
                         }
+                    %>
 
-                        document.forms[0].submit();
-                    }
-                </script>
-            </article>
-        </section>
-        <footer>
-            <!--<script src="scripts/rodape.js"></script>-->
-        </footer>
-    </body>
-</html>
+                    <div class="container1"><h1>Consulta Categorias (Padrões na inicialização do Usuario)</h1>
+
+                        <%
+                            CategoriaDefault categoriaDefault = new CategoriaDefault();
+                            ResultSet rs = categoriaDefault.consultarTodas();
+                        %>
+
+                        <table style="width: 70%;">
+                            <thead>
+                            <th>id</th>
+                            <th>Descrição</th>
+                            <th>Tipo Categoria</th>
+                            <th>Editar</th>
+                            <th>Excluir</th>
+                            </thead>
+                            <tbody>
+                                <%while (rs.next()) {%>
+                                <tr>
+                                    <td><%out.write("" + rs.getInt("id"));%></td>
+                                    <td><%out.write(rs.getString("descricao"));%></td>
+                                    <%if (rs.getString("tipo").contains("R")) {%>
+                                    <td><%out.write(rs.getString("tipo") + "ECEITA");%></td>
+                                    <%}%>
+                                    <%if (rs.getString("tipo").contains("D")) {%>
+                                    <td><%out.write(rs.getString("tipo") + "ESPESA");%></td>
+                                    <%}%>
+                                        <td><% out.write("<a href=editarCategoriaDefault.jsp?id="
+                                        + rs.getInt("id") + ">Editar</a>"); %></td>
+                                        <td><% out.write("<a href=excluirCategoriaDefault.jsp?id="
+                                        + rs.getInt("id") + ">Excluir</a>"); %></td>
+                                </tr>
+                                <%}%>
+                            </tbody>
+                        </table>
+                        <p class="novo"><a href="cadastroCategoriaDefault.jsp">Clique <strong>aqui</strong> para 
+                                Incluir uma nova Categoria</a></p>
+                    </div>
+                    <footer>
+                        <i class="final"><img src="imagens/icon-c.png" > - 2021 - Desenvolvido nas aulas de Java da Turma Maturitech </i>
+                    </footer>  
+                    </body>
+                    </html>

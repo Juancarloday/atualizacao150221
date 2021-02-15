@@ -10,10 +10,6 @@ import java.text.DecimalFormatSymbols;
 import java.util.Calendar;
 import java.util.Locale;
 
-/**
- *
- * @author entra21
- */
 public class ConversorData {
 
     public static java.sql.Date conv(Calendar d) {

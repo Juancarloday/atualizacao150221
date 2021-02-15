@@ -14,19 +14,19 @@
     </head>
     <body>
         <h1>Excluir Usuario</h1>
-         <hr/>
-         <%
-             int id = Integer.parseInt(request.getParameter("id"));
-             Usuario u = new Usuario();
-             if (id != 0) {
-                 u = u.consultar(id);
-                 if(u.excluir()) {
-                     out.write("Usuario excluído com sucesso");
-                 } else {
-                     out.write("Erro ao excluir Usuario");
-                 }
-             }
-         %>
+        <hr/>
+        <%
+            int id = Integer.parseInt(request.getParameter("id"));
+            Usuario u = new Usuario();
+            if (id != 0) {
+                u = u.consultar(id);
+                if (u.excluir()) {
+                    out.write("Usuario excluído com sucesso");
+                } else {
+                    out.write("Erro ao excluir Usuario");
+                }
+            }
+        %>
         <hr />
         <a href="consultaUsuario.jsp">Consulta usuario</a>
     </body>

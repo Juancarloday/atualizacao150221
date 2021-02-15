@@ -6,8 +6,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Conexao {
-    
-    public static Connection conectar(){
+
+    public static Connection conectar() {
         Connection con = null;
         String url = "jdbc:postgresql://localhost:5432/financeiro";
         String user = "postgres";
@@ -18,6 +18,6 @@ public class Conexao {
         } catch (SQLException | ClassNotFoundException ex) {
             System.out.println("Erro ao conectar con o banco");
         }
-        return con;                
+        return con;
     }
 }

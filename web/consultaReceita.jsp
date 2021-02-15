@@ -4,170 +4,109 @@
     Created on : 05/01/2021, 15:10:41
     Author     : User
 --%>
-
+<%@page import="utils.ConversorData"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="Modelos.Receita"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html style="background-color:rgba(0, 0, 242, 0.1)">
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Minha Agenda Financeira</title>
-        <link rel="stylesheet" href="style/estilos2.css">
-        <style>
-            table {
-                font-family: arial, sans-serif;
-                border-collapse: collapse;
-                width: 70%;
-            }
-            td, th {
-                border: 1px solid #B0E0E6;
-                text-align: center;
-                padding: 7px;
-            }
-            tr:nth-child(even) {
-                background-color: #B0E0E6;
-            }
-        </style>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="style/estilos.css">
+        <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+        <link rel="stylesheet" href="style/estilos.css">
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
     </head>
     <body>
-        
-    <%
- int idUser = 0;
-            //verifica sessão
-            String usuario = (String) session.getAttribute("usuario");           
-            if (usuario == null) {
-                response.sendRedirect("login.jsp");
-            } 
-            else{
-               idUser = (int) session.getAttribute("idUser");
-            }
-%>    
-
         <header>
-            <!--<script src="scripts/cabecalho.js" ></script>-->
+            <div class="logo"><img src="imagens/logo.png"></div>
         </header>
-        <section>
-            <nav>
-                <!--<script src="scripts/menu.js" > </script>-->
-            </nav>
-            <article>
 
-                <h1>Consulta Receitas</h1>
-                <hr />
+        <div class="login">
+            <img src="imagens/avatar.jpg" style="width:76px">
+            <h3> Olá,
                 <%
-                    Receita receita = new Receita();
-                    ResultSet rs = receita.consultarInner(idUser);
-                %>
-                <table>
-                    <thead>
-                    <th>Id</th>
-                    <th>Data</th>
-                    <th>Categoria</th>
-                    <th>Valor</th>
-                    <th>Descrição</th>
-                    <th>Editar</th>
-                    <th>Excluir</th>
-                    </thead> 
-                    <tbody>
-                        <%while(rs.next()){%>
-                        <tr>
-                            <td><%out.write(""+rs.getString("id"));%></td>
-                            <td><%out.write(rs.getString("data"));%></td>
-                            <td><%out.write(rs.getString("categoria"));%></td>
-                            <td><%out.write(rs.getString("valor"));%></td>
-                            <td><%out.write(rs.getString("descricao"));%></td>
-                            <td><%out.write("<a href=editarReceita.jsp?id="+rs.getString("id")
-                                +"&idUser="+rs.getString("idusuario")+">Editar</a>");%></td>   
-                            <td><%out.write("<a href=excluirReceita.jsp?id="+rs.getString("id")
-                                +"&idUser="+rs.getString("idusuario")+">Excluir</a>");%></td>   
-                        </tr>
-                        <%}%>
-                    </tbody>
-                </table>
-                <p><a href="cadastroReceita.jsp">Clique <strong>aqui</strong> para Incluir novo registro!</a></p>
-            </article>
-        </section>
-        <footer>
-            <script src="scripts/rodape.js"></script>
-        </footer>   
-    </body>
-</html>
+                    String nomeUser = (String) session.getAttribute("nome");
+                    out.write(nomeUser);
+                %> !!
+                <h3>
+                    <div class="topnav a">
+                        <a href="#"><i class="fa fa-envelope"></i> </a>
+                        <a href="#"><i class="fa fa-user"></i></a>
+                        <a href="#"><i class="fa fa-cog"></i></a>
+                    </div>
+                    </div>
+                    <div class="painel"> Painel de Controle </div><br>
 
+                    <div class="menu">
+                        <div class="clearfix">
+                            <div class="column">
+                                <ul>
+                                    <li><a href="menu.jsp" ><i class="fa fa-users fa-fw"></i>  MENU </a></li>
+                                    <li><a href="cadastroDespesa.jsp"><i class="fas fa-comments-dollar"></i>  Seu novo Gasto</a> </li>
+                                    <li><a href="cadastroReceita.jsp"><i class="fas fa-donate"></i>  Sua nova Renda</a></li>
+                                    <li><a href="cadastroCategoria.jsp"><i class="fas fa-clipboard"></i>  Crie nova Categoria</a></li>
+                                    <li><a href="consultaBalancete.jsp"><i class="fas fa-balance-scale"></i>  Resumo Financeiro</a></li>
+                                    <li><a href="#"><i class="fa fa-bell fa-fw"></i>  Meus Dados</a></li>
+                                    <li><a href="#"><i class="fa fa-cog fa-fw"></i>  Configurações</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
 
-<%-- 
-    Document   : consultaCategoria
-    Created on : 05/01/2021, 15:10:41
-    Author     : User
+                    <%
+                        int idUser = 0;
+                        //verifica sessão
+                        String usuario = (String) session.getAttribute("usuario");
+                        if (usuario == null) {
+                            response.sendRedirect("login.jsp");
+                        } else {
+                            idUser = (int) session.getAttribute("idUser");
+                        }
+                    %>    
 
+                    <div class="container1"><h1>Consulta Receitas</h1>
+                        <hr />
 
-<%@page import="Modelos.Receita"%>
-<%@page import="Modelos.Despesa"%>
-<%@page import="java.util.List"%>
-<%@page contentType="text/html charset=UTF-8" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Minha Agenda Financeira</title>
-        <link rel="stylesheet" href="style/estilos.css">
-        <style>
-            table {
-                font-family: arial, sans-serif;
-                border-collapse: collapse;
-                width: 70%;
-            }
-            td, th {
-                border: 1px solid #B0E0E6;
-                text-align: center;
-                padding: 7px;
-            }
-            tr:nth-child(even) {
-                background-color: #B0E0E6;
-            }
-        </style>
-        </head>
-    <body>
-  
-    <body>
-        <h1>Consulta Receita</h1>
-         <hr />
-        <%
-           Receita receita = new Receita();
-           List<Receita> receitas = receita.consultar();
-           
-        %>
-        <table>
-        <thead>
-        <th>Id</th>
-        <th>Descricao</th>
-        <th>Valor</th>
-        <th>Data</th>
-        <th>Excluir</th>
-        <th>Editar</th>
-        
-         </thead> 
-         
-             
-        <tbody>
-            <% for(Receita r: receitas) {%>
-            <tr>
-                <td><% out.write(""+r.getId());%></td>
-                <td><% out.write(r.getDescricao());%></td>
-                <td><% out.write(String.valueOf(r.getValor()));%></td>
-                <td><% out.write(String.valueOf(r.getData()));%></td>
-                 
-            <td><%out.write("<a href=excluirReceita.jsp?id="+r.getId()+">Excluir</a>");%></td>   
-            <td><%out.write("<a href=editarReceita.jsp?id="+r.getId()+">Editar</a>");%></td>   
-            </tr>
-            <%}%>
-             
-        </tbody>
-            </table>
-            <footer>
-            <script src="scripts/rodape.js"></script>
-        </footer>   
-    </body>
-</html>
---%>
+                        <%
+                            Receita receita = new Receita();
+                            ResultSet rs = receita.consultarInner(idUser);
+                        %>
+                        <table>
+                            <thead>
+                            <th>Id</th>
+                            <th>Data</th>
+                            <th>Categoria</th>
+                            <th>Valor</th>
+                            <th>Descrição</th>
+                            <th>Editar</th>
+                            <th>Excluir</th>
+                            </thead> 
+                            <tbody>
+                                <%while (rs.next()) {%>
+                                <tr>
+                                    <td><%out.write("" + rs.getString("id"));%></td>
+                                    <td><%out.write(rs.getString("data"));%></td>
+                                    <td><%out.write(rs.getString("categoria"));%></td>
+                                    <td><%out.write(rs.getString("valor"));%></td>
+                                    <td><%out.write(rs.getString("descricao"));%></td>
+                                        <td><%out.write("<a href=editarReceita.jsp?id=" + rs.getString("id")
+                                        + "&idUser=" + rs.getString("idusuario") + ">Editar</a>");%></td>   
+                                        <td><%out.write("<a href=excluirReceita.jsp?id=" + rs.getString("id")
+                                        + "&idUser=" + rs.getString("idusuario") + ">Excluir</a>");%></td>   
+                                </tr>
+                                <%}%>
+                            </tbody>
+                        </table>
+                    </div>      
+                    <footer>
+                        <i class="final"><img src="imagens/icon-c.png" > - 2021 - Desenvolvido nas aulas de Java da Turma Maturitech </i>   
+                    </footer>   
+                    </body>
+                    </html>                  

@@ -1,4 +1,5 @@
 
+<%@page import="utils.ConversorData"%>
 <%-- 
     Document   : cadastroDespesa
     Created on : 13/12/2020, 20:01:48
@@ -11,149 +12,122 @@
 <%@page import="Modelos.Categoria"%>
 <%@page contentType="text/html charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html style="background-color:rgba(0, 0, 242, 0.1)">
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Minha Agenda Financeira</title>
-    </head>
-    <body>
-        <h1>Despesa editada!</h1>
-        <%
-            int id = Integer.parseInt(request.getParameter("id"));
-            int idUser = Integer.parseInt(request.getParameter("idUser"));
-            Despesa despesa = new Despesa();
-            Categoria categoria = new Categoria();
-            List<Categoria> categorias = null;
-            if (id != 0 && idUser != 0) {
-                despesa = despesa.consultar(id, idUser);
-                categorias = categoria.consultar(idUser, "D");  //consulta as categorias tipo=DESPESA
-            }
-        %>
-        <div>
-            <form action="recebeEditaDespesa.jsp" method="POST">
-
-                <input type="hidden" name="id" value="<%out.write(""+despesa.getId());%>">
-                <label>Informe a categoria</label>
-                <select name="idCategoria">
-                    <% for (Categoria c : categorias) { %>
-                        <% if (c.getId() == despesa.getIdCategoria()) { %>
-                        <option selected value="<%out.write("" + c.getId());%>">
-                            <%out.write(c.getDescricao());%></option>
-                    <% } else { %>
-                        <option value="<%out.write("" + c.getId());%>">
-                            <%out.write(c.getDescricao());%></option>
-                        <% } %>
-                    <% } %>
-                </select> 
-                <br />
-                <label>Informe a descrição</label>
-                <input type="text" name="descricao" maxlength="50" 
-                       value="<%out.write(despesa.getDescricao());%>"/> 
-
-                <br />
-                <label>Informe o valor</label>
-                <input type="text" name="valor" 
-                       value="<%out.write(String.valueOf(despesa.getValor()));%>"/>
-
-                <br />
-                <label>Informe a data</label>
-                <input type="date" name="data" 
-                       value="<%out.write(String.valueOf(despesa.getData()));%>"/>
-
-                <hr />
-                <input type="button" value="Alterar" onclick="enviaForm()" />
-            </form>
-        </div>
-    </form>
-    <script>
-        function enviaForm() {
-            /*var descricao = document.getElementsByName("descricao");
-             if (descricao[0].value === "") {
-             descricao[0].focus();
-             alert("informe a descricao");
-             exit();
-             }*/
-            var valor = document.getElementsByName("valor");
-            if (valor[0].value === "") {
-                valor[0].focus();
-                alert("informe o valor");
-                exit();
-            }
-            var data = document.getElementsByName("data");
-            if (data[0].value === "") {
-                data[0].focus();
-                alert("informe a data");
-                exit();
-            }
-            document.forms[0].submit();
-        }
-    </script>
-</body>
-</html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<%-- 
-    Document   : editarDespesa
-    Created on : 12 de jan. de 2021, 11:25:55
-    Author     : entra21
-
-
-<%@page import="Modelos.Despesa"%>
-<%@page contentType="text/html charset=UTF-8" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Minha Agenda Financeira</title>
-    </head>
-    <body>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="style/estilos.css">
-        <h1>Editar Despesa</h1>
-        <hr />
-        <%
-          int id = Integer.parseInt(request.getParameter("id"));
-          Despesa d = new Despesa();
-          if (id != 0){
-              d = d.consultar(id);
-          }    
-        %>
-        <form action="recebeEditaDespesa.jsp" method="POST">
-            <label> Id  </label>
-            <input type="text" name="id" 
-                   readonly="true"
-                   value="<%out.write(""+d.getId());%>"/>
-            <br />
-            <label> Descrição </label>
-            <input type="text" name="descricao" 
-                   value="<%out.write(d.getDescricao());%>" />
-            <br />
-            <label> Data </label>
-            <input type="text" name="data" 
-                   value="<%out.write(""+d.getData());%>" />
-            <br />
-            <label> Valor </label>
-            <input type="text" name="valor" 
-                   value="<%out.write(""+d.getValor());%>" />
-            
-           
-            <hr />
-            <input type="submit" value="Alterar" />
-        </form>
+        <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+        <link rel="stylesheet" href="style/estilos.css">
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    </body>
-</html>
---%>
+    </head>
+    <body>
+        <header>
+            <div class="logo"><img src="imagens/logo.png"></div>
+        </header>
+
+        <div class="login">
+            <img src="imagens/avatar.jpg" style="width:76px">
+            <h3> Olá,
+                <%
+                    String nomeUser = (String) session.getAttribute("nome");
+                    out.write(nomeUser);
+                %> !!
+                <h3>
+                    <div class="topnav a">
+                        <a href="#"><i class="fa fa-envelope"></i> </a>
+                        <a href="#"><i class="fa fa-user"></i></a>
+                        <a href="#"><i class="fa fa-cog"></i></a>
+                    </div>
+                    </div>
+                    <div class="painel"> Painel de Controle </div><br>
+
+                    <div class="menu">
+                        <div class="clearfix">
+                            <div class="column">
+                                <ul>
+                                    <li><a href="menu.jsp" ><i class="fa fa-users fa-fw"></i>  MENU </a></li>
+                                    <li><a href="cadastroDespesa.jsp"><i class="fas fa-comments-dollar"></i>  Seu novo Gasto</a> </li>
+                                    <li><a href="cadastroReceita.jsp"><i class="fas fa-donate"></i>  Sua nova Renda</a></li>
+                                    <li><a href="cadastroCategoria.jsp"><i class="fas fa-clipboard"></i>  Crie nova Categoria</a></li>
+                                    <li><a href="consultaBalancete.jsp"><i class="fas fa-balance-scale"></i>  Resumo Financeiro</a></li>
+                                    <li><a href="#"><i class="fa fa-bell fa-fw"></i>  Meus Dados</a></li>
+                                    <li><a href="#"><i class="fa fa-cog fa-fw"></i>  Configurações</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cadcat1"><h1>Editar seu Gasto</h1>      
+                        <%
+                            int id = Integer.parseInt(request.getParameter("id"));
+                            int idUser = Integer.parseInt(request.getParameter("idUser"));
+                            Despesa despesa = new Despesa();
+                            Categoria categoria = new Categoria();
+                            List<Categoria> categorias = null;
+                            if (id != 0 && idUser != 0) {
+                                despesa = despesa.consultar(id, idUser);
+                                categorias = categoria.consultar(idUser, "D");
+                            }
+                        %>
+                        <div>
+                            <form action="recebeEditaDespesa.jsp" method="POST">
+
+                                <input type="hidden" name="id" value="<%out.write("" + despesa.getId());%>">
+                                <label>Informe a categoria</label>
+                                <select name="idCategoria">
+                                    <% for (Categoria c : categorias) { %>
+                                    <% if (c.getId() == despesa.getIdCategoria()) { %>
+                                    <option selected value="<%out.write("" + c.getId());%>">
+                                        <%out.write(c.getDescricao());%></option>
+                                        <% } else { %>
+                                    <option value="<%out.write("" + c.getId());%>">
+                                        <%out.write(c.getDescricao());%></option>
+                                        <% } %>
+                                        <% } %>
+                                </select> 
+                                <br />
+                                <label>Informe a Descrição</label>
+                                <input type="text" name="descricao"
+                                       value="<%out.write(despesa.getDescricao());%>"/> 
+
+                                <br />
+                                <label>Informe o valor</label>
+                                <input type="text" name="valor" value="<%out.write(ConversorData.formataMoeda(despesa.getValor()));%>"/>
+
+                                <br />
+                                <label>Informe a data</label>
+                                <input type="date" name="data" 
+                                       value="<%out.write(String.valueOf(despesa.getData()));%>"/>
+
+                                <br>
+                                <br>
+                                <input class="cancelar" type="button" value="Alterar" onclick="enviaForm()" />
+                            </form>
+                        </div>               
+                        <script>
+                            function enviaForm() {
+                                var valor = document.getElementsByName("valor");
+                                if (valor[0].value === "") {
+                                    valor[0].focus();
+                                    alert("informe o valor");
+                                    exit();
+                                }
+                                var data = document.getElementsByName("data");
+                                if (data[0].value === "") {
+                                    data[0].focus();
+                                    alert("informe a data");
+                                    exit();
+                                }
+                                document.forms[0].submit();
+                            }
+                        </script>
+                    </div>   
+                    <footer>
+                        <i class="final"><img src="imagens/icon-c.png" > - 2021 - Desenvolvido nas aulas de Java da Turma Maturitech </i>
+                    </footer>
+                    </body>
+                    </html>
